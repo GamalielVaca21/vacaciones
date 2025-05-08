@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Vacaciones</title>
+    <title>Dashboard Usuario</title>
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
                 session_start();
                 if (isset($_SESSION['nombre'])) {
                     $nombre = $_SESSION['nombre'];
-                    echo "Saludos, " . htmlspecialchars($nombre);
+                    echo "SALUDOS, " . htmlspecialchars(string: $nombre);
                 } else {
                     echo "No se ha iniciado sesión.";
                     exit; 
@@ -31,7 +31,7 @@
                 include('conexion.php');
 
                 $numero_reloj = $_SESSION['numero_reloj'];
-                $query = "SELECT dias_vacaciones FROM vacaciones WHERE numero_reloj = '$numero_reloj'";
+                $query = "SELECT dias_vacaciones FROM usuario WHERE numero_reloj = '$numero_reloj'";
                 $resultado = mysqli_query($conn, $query);
 
                 if ($fila = mysqli_fetch_assoc($resultado)) {
@@ -44,7 +44,7 @@
 
             <div class="acciones">
                 <button onclick="location.href='solicitar_vacaciones.php'" class="send-button">Solicitar Vacaciones</button>
-                <!--<button onclick="location.href='solicitar_permiso.php'" class="send-button">Solicitar Permiso</button>-->
+                <button onclick="location.href='historial.php'" class="send-button">Ver Peticiones</button>
                 <button onclick="location.href='logout.php'" class="send-button">Cerrar Sesión</button>
             </div>
         </div>

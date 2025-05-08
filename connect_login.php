@@ -24,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nombre']) && isset($_P
         $tipo_usuario = $row['tipo_usuario'];
 
         $_SESSION["nombre"] = $nombre;
+        $_SESSION['numero_reloj'] = $numero_reloj; // Aquí agregamos el numero_reloj
 
         if ($tipo_usuario == "user") {
             header("Location: index.php");
@@ -38,5 +39,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nombre']) && isset($_P
 
     $conn->close();
 }
-
 ?>

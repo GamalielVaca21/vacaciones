@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin</title>
+    <title>Dashboard Usuario</title>
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
@@ -31,7 +31,7 @@
                 include('conexion.php');
 
                 $numero_reloj = $_SESSION['numero_reloj'];
-                $query = "SELECT dias_vacaciones FROM vacaciones WHERE numero_reloj = '$numero_reloj'";
+                $query = "SELECT dias_vacaciones FROM usuario WHERE numero_reloj = '$numero_reloj'";
                 $resultado = mysqli_query($conn, $query);
 
                 if ($fila = mysqli_fetch_assoc($resultado)) {
