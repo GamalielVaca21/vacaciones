@@ -1,50 +1,59 @@
+<?php
+session_start();
+if (!isset($_SESSION['numero_reloj'])) {
+    header("Location: login.php");
+    exit;
+}
+
+include('conexion.php');
+
+$numero_reloj = $_SESSION['numero_reloj'];
+$query = "SELECT nombre, tipo_usuario, dias_vacaciones FROM usuario WHERE numero_reloj = '$numero_reloj'";
+$resultado = mysqli_query($conn, $query);
+
+if (!$resultado || mysqli_num_rows($resultado) === 0) {
+    echo "Error al obtener los datos del usuario.";
+    exit;
+}
+
+$usuario = mysqli_fetch_assoc($resultado);
+
+// Verifica que el usuario sea admin
+if ($usuario['tipo_usuario'] !== 'admin') {
+    echo "Acceso denegado. Esta sección es solo para administradores.";
+    exit;
+}
+
+$nombre = htmlspecialchars($usuario['nombre']);
+$dias_vacaciones = $usuario['dias_vacaciones'];
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Usuario</title>
+    <title>Dashboard Administrador</title>
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
     <div class="contenedor">
         <section class="top">
-            <h1 class="titulo">Sistema de Vacaciones</h1>
-            <img id="logo" src="img/logo_empresa.png" alt="Logo Empresa">
+            <h1 class="titulo">Sistema de Vacaciones - Admin</h1>
         </section>
 
         <div class="info">
-            <h1>
-            <?php
-                session_start();
-                if (isset($_SESSION['nombre'])) {
-                    $nombre = $_SESSION['nombre'];
-                    echo "SALUDOS, " . htmlspecialchars(string: $nombre);
-                } else {
-                    echo "No se ha iniciado sesión.";
-                    exit; 
-                }
-            ?>
-            </h1><br>
-
-            <?php
-                include('conexion.php');
-
-                $numero_reloj = $_SESSION['numero_reloj'];
-                $query = "SELECT dias_vacaciones FROM usuario WHERE numero_reloj = '$numero_reloj'";
-                $resultado = mysqli_query($conn, $query);
-
-                if ($fila = mysqli_fetch_assoc($resultado)) {
-                    echo "<h2>Días de vacaciones disponibles: " . $fila['dias_vacaciones'] . "</h2>";
-                } else {
-                    echo "<h2>No tienes días disponibles registrados.</h2>";
-                }
-            ?>
+            <h1>SALUDOS, <?php echo $nombre; ?></h1><br>
+            <h2>Días de vacaciones disponibles: <?php echo $dias_vacaciones; ?></h2>
             <br><br>
 
             <div class="acciones">
+                <button onclick="location.href='aprobar_solicitudes.php'" class="send-button">Aprobar Solicitudes</button>
                 <button onclick="location.href='solicitar_vacaciones.php'" class="send-button">Solicitar Vacaciones</button>
-                <!--<button onclick="location.href='solicitar_permiso.php'" class="send-button">Solicitar Permiso</button>-->
+                <button onclick="location.href='historial.php'" class="send-button">Ver Peticiones</button>
+                <button onclick="location.href='perfil.php'" class="send-button">Ver Perfil</button>
+                <button onclick="location.href='politica.php'" class="send-button">Ver Política</button>
+                <button onclick="location.href='contacto.php'" class="send-button">Contacto y soporte</button>
                 <button onclick="location.href='logout.php'" class="send-button">Cerrar Sesión</button>
             </div>
         </div>
